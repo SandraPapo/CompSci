@@ -1,0 +1,70 @@
+package com.company;
+
+import java.util.Arrays;
+public class Main {
+
+    public static void main(String[] args) {
+        String ciphertext = "DWGFQRVPLNYIEQBYUOXFVHPGXFIGXNTKZSNRKKXSTUTLKLDAENUPDULVSIUMAVRGEFKYEQXCCVNOBZWJSOHTPVGKPEFRRKZFIBCOHCFRLRHPSZECDIUYZIAVIVSENGHTTIOHAXNGSEIGLHGBQDVSYQERIASTJSEINHKGNBOVGOVSZLVKENIOUEXOUSFYVCTJOIAFIERKBEEQAUUQTLDUTOOOTCIUOFHRWAPNIRVIIPQKEFXTKCYRFXNIVQTUDRRCNUGLHCDPORHIVWQAAEOKBATFWRWQSEQWIUCTOHADGBEIPPNPYFSNNBWDUTVHSWQSEFIIXOMWVADKNQASAAURQDNRRQCEMRLAUSFPBHSKLXEGWAVWDSVCGNOFHBGPUWUNQLAUNQRNCGGNTAQHHGCAMRUAPDMSGXCKNQABUDGWANVPCCVBOFHEUCUOAPNFSRTUPTYODEFDWCCUTADTCVEOCDSUSNLRIHCDEHRBIIRFHNKEVKWEAWETYINYXFGSIAFPBQEFTBTXRYGNQIHGCQTUTOTSQSGDPQSDOGLHGXTIFDWPGARQHDKCFRNRTGNYEPDMGRQSNXDPYITBTXCWUNRIHGMAFSTEEEBSZNDGKDPBXRQDIHNIOPOMRGWIUDTETDOFYRTUPTPYITUPTYOWNBLADYGTGWEEYOOBWLCVMTUPTOSEEEPBNOOOPDCTSQDCDITYFFYXPRKZTYNHGVMUTWEFGUTUPPRKDEAIEPTAYZTNVBMIFXNIRUSNGMUDAHRPVGXUNZDCMNQSCPITSZWUPTKMAUYSNQDNUGROPCUDRGTJOIOEHTRYESVQLGDMSGTAPNMNLLAASEAVSWKDTIARRGKEIAVCQVPNRHSCCYRFXNIVQTUDRRDAOXWETMAFSTEWZETNXRUGUTUWETSPOADTUOQWUPTAYGEKEEEDFOSXNFEZLRHSAYGCBCSKNQRVILKUQLLIHCDIEFWANVPIFROXODACPCMOFOSHTTIOHAXNGYZTUTCQPRERIRCIBOVGOVGMSFDBGBQDNIOPMQCBBEEYYEZNFTSQNQWEUKUDFAIRZUNTWIUKDMFIHTYGGUBIPOZEIDUUPMCUTZRKEAYAOYWQTBXNVODEFIMACQLSXNOIOOSUEGMGPFPNFSIIYARGCBEPIYQEDCBROVRQRRXSKDMBNGGCSZHRLAUCAQHPIPDXYUJMQBAUFIHCDUWNHFQBOEQIONKGGUPNFGQWRCTVYSEGWETDATUTDTKIIAVRQYYWUTRGDTEPDFHOQCHESCXPTEPYTOYAVCEFEZDVHTWBNEQPSYOTAQAEHDFHRBPQSDOGBAFOYEETCCZUTHAAVOFHRHCGXQOSIHGXUGUIBGPARRAIUDQNVCGXODYPPRGPGLYNAPNHEEXFASZGGWERYEIGXOPYRTUTVCBUOHHCWZESBBRUMMVRCDKCTSGDOFLKTUTTTKKAASPQEDEQDUVIQSGWEPCTEPPMGKORBHSVYFHRLIPNAWJWETOKOHHAVGUTUBAFOYOVHENVQCLCTJSMYRHHGBQAETTJOFHETEEEBSNCDVRQCHEOPDTEZPNVOXPVTCGRMLSSRWXWTUPTYYGLQQEOBXAJGEPMQCNKEPNUSUHAPNFHRDNGYZTUTTTKKJBWNEKHEASIUREIFPWJSYPHIIVNAWAIHGBQGBDDQXQTJDTJBQESDUTPUVRQUVGTEETTJOZIFIHGMGPBUMTSZGYTTJYDPUTDQOENBITCUQCBUFGOFHRCANVMRRPCEYGNGTDHYDOATMQWQNGBYHBUEASWKDTIAUIPSFEPPRGRQTBDKCNDOCDRVGAFEDMVRQGEDUPNEIATAEROUCHECVUNTIHGWGPVCSGZMRNIEVOETGJBGCFAFIIPQQAPWIPDGRAPSJOPIQHOJSEPUNSKYSNBBYWXPEELEPDMCHGIQEECUPNIOMNRMPTOESVDNIKFHRGEFDTEETTJKFIPPNQXXYQTSEBUBRPSJKXFCJZBVQDNCDJKXFETLKOH";
+        System.out.println("The given ciphertext = \n" + ciphertext);
+        System.out.println("Number of letters in the ciphertext: " + ciphertext.length());
+
+        int[] coincidenceArray = new int[20];
+
+
+        for (int shift = 1; shift <= 20; shift++) {
+            int count = 0;
+            for (int i = 0; i < ciphertext.length(); i++) {
+                System.out.printf("%c %c\n", ciphertext.charAt(i), ciphertext.charAt((i + shift) % ciphertext.length()) );
+                if (ciphertext.charAt(i) == ciphertext.charAt((i + shift) % ciphertext.length())) {
+                    count++;
+                }
+            }
+            coincidenceArray[shift - 1] = count;
+        }
+
+        System.out.println("The coincidence array is " + Arrays.toString(coincidenceArray));
+
+        int maxIndex1 = 0 ,maxIndex2 = 0;
+
+        for (int i = 0; i < coincidenceArray.length; i++) {
+            if(coincidenceArray[i] > coincidenceArray[maxIndex1])
+                maxIndex1 = i;
+        }
+
+        for (int i = 0; i < coincidenceArray.length; i++) {
+            if(coincidenceArray[i] > coincidenceArray[maxIndex2] && maxIndex1 != i)
+                maxIndex2 = i;
+        }
+        int gcd = findGCD(maxIndex1 + 1, maxIndex2 + 1);
+        System.out.print("The max1 is " + coincidenceArray[maxIndex1] + " and the max2 is " + coincidenceArray[maxIndex2] + " the gcd is " + gcd);
+    }
+
+    public static int findGCD(int a, int b) {
+        if (a < b) {
+            int temp = a;
+            a = b;
+            b = temp;
+        }
+        int r = a % b ;
+        while (r > 0) {
+            a = b;
+            b = r;
+            r = a % b;
+        }
+        return b;
+    }
+    
+
+    /*
+    *
+   Find the key
+1. Assume key length is found as l.
+2. Split the ciphertext in l parts.
+3. For i = 1 To l
+1) Treat part i as the ciphertext resulted from a shift cipher.
+2) Decrypt part i using the method (refer to Page 15-16) for cracking a
+shift cipher.
+3) If i=l Then break; Else {i++; go to Step 3)}
+    *
+    * */
+}
